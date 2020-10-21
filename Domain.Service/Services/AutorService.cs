@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Model.Interfaces.Repositories;
 using Domain.Model.Interfaces.Services;
 using Domain.Model.Models;
 
@@ -10,29 +8,37 @@ namespace Domain.Service.Services
 {
     public class AutorService : IAutorService
     {
+        private readonly IAutorRepository _autorRepository;
+
+        public AutorService(
+            IAutorRepository autorRepository)
+        {
+            _autorRepository = autorRepository;
+        }
+
         public async Task<IEnumerable<AutorEntity>> GetAllAsync(string search)
         {
-            throw new NotImplementedException();
+            return await _autorRepository.GetAllAsync(search);
         }
 
         public async Task<AutorEntity> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _autorRepository.GetByIdAsync(id);
         }
 
         public async Task<int> AddAsync(AutorEntity autorEntity)
         {
-            throw new NotImplementedException();
+            return await _autorRepository.AddAsync(autorEntity);
         }
 
         public async Task EditAsync(AutorEntity autorEntity)
         {
-            throw new NotImplementedException();
+            await _autorRepository.EditAsync(autorEntity);
         }
 
         public async Task RemoveAsync(AutorEntity autorEntity)
         {
-            throw new NotImplementedException();
+            await _autorRepository.RemoveAsync(autorEntity);
         }
     }
 }
