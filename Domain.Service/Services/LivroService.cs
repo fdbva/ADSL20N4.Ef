@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Model.Interfaces.Repositories;
 using Domain.Model.Interfaces.Services;
 using Domain.Model.Models;
 
@@ -10,29 +8,37 @@ namespace Domain.Service.Services
 {
     public class LivroService : ILivroService
     {
+        private readonly ILivroRepository _livroRepository;
+
+        public LivroService(
+            ILivroRepository livroRepository)
+        {
+            _livroRepository = livroRepository;
+        }
+
         public async Task<IEnumerable<LivroEntity>> GetAllAsync(string search)
         {
-            throw new NotImplementedException();
+            return await _livroRepository.GetAllAsync(search);
         }
 
         public async Task<LivroEntity> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _livroRepository.GetByIdAsync(id);
         }
 
         public async Task<int> AddAsync(LivroEntity livroEntity)
         {
-            throw new NotImplementedException();
+            return await _livroRepository.AddAsync(livroEntity);
         }
 
         public async Task EditAsync(LivroEntity livroEntity)
         {
-            throw new NotImplementedException();
+            await _livroRepository.EditAsync(livroEntity);
         }
 
         public async Task RemoveAsync(LivroEntity livroEntity)
         {
-            throw new NotImplementedException();
+            await _livroRepository.RemoveAsync(livroEntity);
         }
     }
 }
