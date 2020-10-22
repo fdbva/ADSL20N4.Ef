@@ -2,17 +2,21 @@
 using Application.AppServices;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mvc.Controllers
 {
     public class LivroController : Controller
     {
+        private readonly IAutorAppService _autorAppService;
         private readonly ILivroAppService _livroAppService;
 
         public LivroController(
+            IAutorAppService autorAppService,
             ILivroAppService livroAppService)
         {
+            _autorAppService = autorAppService;
             _livroAppService = livroAppService;
         }
 
@@ -39,9 +43,22 @@ namespace Mvc.Controllers
             return View(livroViewModel);
         }
 
-        // GET: Livro/Create
-        public IActionResult Create()
+        private async Task PopulateSelectAutores(int? autorId = null)
         {
+            var autores = await _autorAppService.GetAllAsync(null);
+
+            ViewBag.Autores = new SelectList(
+                autores,
+                nameof(AutorViewModel.Id),
+                nameof(AutorViewModel.AutorNomeCompleto),
+                autorId); //TODO: Exibir Nome + sobrenome + id
+        }
+
+        // GET: Livro/Create
+        public async Task<IActionResult> Create()
+        {
+            await PopulateSelectAutores();
+
             return View();
         }
 
@@ -57,6 +74,8 @@ namespace Mvc.Controllers
                 await _livroAppService.AddAsync(livroViewModel);
                 return RedirectToAction(nameof(Index));
             }
+
+            await PopulateSelectAutores(livroViewModel.AutorId);
             return View(livroViewModel);
         }
 
@@ -73,6 +92,9 @@ namespace Mvc.Controllers
             {
                 return NotFound();
             }
+
+            await PopulateSelectAutores(livroViewModel.AutorId);
+
             return View(livroViewModel);
         }
 
@@ -107,6 +129,9 @@ namespace Mvc.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            await PopulateSelectAutores(livroViewModel.AutorId);
+
             return View(livroViewModel);
         }
 

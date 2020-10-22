@@ -20,17 +20,23 @@ namespace Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<LivroEntity>> GetAllAsync(string search)
         {
+            var livrosComAutores = _bibliotecaContext
+                .Livros
+                .Include(x => x.Autor);
+
             if (string.IsNullOrWhiteSpace(search))
             {
-                return _bibliotecaContext.Livros;
+                return livrosComAutores;
             }
 
-            return _bibliotecaContext.Livros.Where(x => x.Titulo.Contains(search));
+            return livrosComAutores.Where(x => x.Titulo.Contains(search));
         }
 
         public async Task<LivroEntity> GetByIdAsync(int id)
         {
-            return await _bibliotecaContext.Livros.FirstOrDefaultAsync(x => x.Id == id);
+            return await _bibliotecaContext.Livros
+                .Include(x => x.Autor)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<int> AddAsync(LivroEntity livroEntity)
