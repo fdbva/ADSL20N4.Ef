@@ -12,5 +12,6 @@ namespace Application.AppServices
         Task<int> AddAsync(LivroViewModel livroViewModel);
         Task EditAsync(LivroViewModel livroViewModel);
         Task RemoveAsync(LivroViewModel livroViewModel);
+        Task<bool> IsIsbnValidAsync(string isbn, int? id);
     }
 }

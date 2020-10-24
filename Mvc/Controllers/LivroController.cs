@@ -166,5 +166,16 @@ namespace Mvc.Controllers
         {
             return _livroAppService.GetByIdAsync(id) != null;
         }
+
+        [AcceptVerbs("GET", "POST")]
+        public async Task<IActionResult> IsIsbnValid(string isbn, int? id = null)
+        {
+            if (!(await _livroAppService.IsIsbnValidAsync(isbn, id)))
+            {
+                return Json($"Isbn {isbn} já está cadastrado e não pode ser repetido");
+            }
+
+            return Json(true);
+        }
     }
 }

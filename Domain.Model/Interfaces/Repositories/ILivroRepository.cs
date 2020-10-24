@@ -11,5 +11,6 @@ namespace Domain.Model.Interfaces.Repositories
         Task<int> AddAsync(LivroEntity livroEntity);
         Task EditAsync(LivroEntity livroEntity);
         Task RemoveAsync(LivroEntity livroEntity);
+        Task<LivroEntity> GetByIsbnAsync(string isbn);
     }
 }

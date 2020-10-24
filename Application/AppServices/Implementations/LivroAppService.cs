@@ -56,5 +56,10 @@ namespace Application.AppServices.Implementations
 
             await _livroService.RemoveAsync(livroEntity);
         }
+
+        public async Task<bool> IsIsbnValidAsync(string isbn, int? id)
+        {
+            return await _livroService.IsIsbnValidAsync(isbn, id);
+        }
     }
 }

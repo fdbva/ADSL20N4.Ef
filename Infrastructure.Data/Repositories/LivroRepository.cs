@@ -63,5 +63,11 @@ namespace Infrastructure.Data.Repositories
 
             await _bibliotecaContext.SaveChangesAsync();
         }
+
+        public async Task<LivroEntity> GetByIsbnAsync(string isbn)
+        {
+            return await _bibliotecaContext.Livros
+                .FirstOrDefaultAsync(x => x.Isbn == isbn);
+        }
     }
 }

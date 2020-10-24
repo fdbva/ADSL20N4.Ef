@@ -40,5 +40,12 @@ namespace Domain.Service.Services
         {
             await _livroRepository.RemoveAsync(livroEntity);
         }
+
+        public async Task<bool> IsIsbnValidAsync(string isbn, int? id)
+        {
+            var livroDoIsbn = await _livroRepository.GetByIsbnAsync(isbn);
+
+            return livroDoIsbn?.Id == id;
+        }
     }
 }
