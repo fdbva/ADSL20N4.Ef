@@ -45,7 +45,10 @@ namespace Domain.Service.Services
         {
             var livroDoIsbn = await _livroRepository.GetByIsbnAsync(isbn);
 
-            return livroDoIsbn?.Id == id;
+            if (livroDoIsbn is null)
+                return true;
+
+            return livroDoIsbn.Id == id;
         }
     }
 }
