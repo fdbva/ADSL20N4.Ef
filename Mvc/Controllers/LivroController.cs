@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Application.AppServices;
 using Application.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +66,7 @@ namespace Mvc.Controllers
         // POST: Livro/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(LivroViewModel livroViewModel)
@@ -101,6 +103,7 @@ namespace Mvc.Controllers
         // POST: Livro/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, LivroViewModel livroViewModel)
@@ -153,6 +156,7 @@ namespace Mvc.Controllers
         }
 
         // POST: Livro/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
