@@ -21,6 +21,8 @@ namespace Mvc
         {
             services.AddControllersWithViews();
 
+            services.AddRazorPages(); // Login
+
             services.RegisterBibliotecaServices(Configuration);
         }
 
@@ -30,6 +32,7 @@ namespace Mvc
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage(); // Login
             }
             else
             {
@@ -42,6 +45,7 @@ namespace Mvc
 
             app.UseRouting();
 
+            app.UseAuthentication(); // Authentication ANTES do Authorization
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -49,6 +53,7 @@ namespace Mvc
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages(); // Login
             });
         }
     }
