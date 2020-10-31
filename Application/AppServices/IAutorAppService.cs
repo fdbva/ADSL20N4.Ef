@@ -6,6 +6,7 @@ namespace Application.AppServices
 {
     public interface IAutorAppService
     {
+        //TODO: trocar para aceitar nullable
         Task<IEnumerable<AutorViewModel>> GetAllAsync(string search);
         Task<AutorViewModel> GetByIdAsync(int id);
         Task<int> AddAsync(AutorViewModel autorViewModel);

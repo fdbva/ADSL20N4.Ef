@@ -21,7 +21,26 @@ namespace Mvc
         {
             services.AddControllersWithViews();
 
+            //AddDbContext e AddDefaultIdentity estão em Areas/Identity/IdentityHostingStartup.cs
+
+            //Comando de Migration para o LoginIdentity:
+            //Add-Migration InitialLoginMigration -context LoginContext -project Mvc -outputdir Areas/Identity/Data/Migrations
+
+            services.AddRazorPages(); // Login
+
             services.RegisterBibliotecaServices(Configuration);
+
+            //package nuget Microsoft.AspNetCore.Authentication.Google
+
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    var googleAuthNSection =
+                        Configuration.GetSection("Authentication:Google");
+
+                    options.ClientId = googleAuthNSection["ClientId"];
+                    options.ClientSecret = googleAuthNSection["ClientSecret"];
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,6 +49,7 @@ namespace Mvc
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage(); // Login
             }
             else
             {
@@ -42,6 +62,7 @@ namespace Mvc
 
             app.UseRouting();
 
+            app.UseAuthentication(); // Authentication ANTES do Authorization
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -49,6 +70,7 @@ namespace Mvc
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages(); // Login
             });
         }
     }
