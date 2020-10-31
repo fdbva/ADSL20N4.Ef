@@ -21,6 +21,11 @@ namespace Mvc
         {
             services.AddControllersWithViews();
 
+            //AddDbContext e AddDefaultIdentity estão em Areas/Identity/IdentityHostingStartup.cs
+
+            //Comando de Migration para o LoginIdentity:
+            //Add-Migration InitialLoginMigration -context LoginContext -project Mvc -outputdir Areas/Identity/Data/Migrations
+
             services.AddRazorPages(); // Login
 
             services.RegisterBibliotecaServices(Configuration);

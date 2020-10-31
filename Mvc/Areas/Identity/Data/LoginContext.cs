@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +6,8 @@ namespace Mvc.Areas.Identity.Data
 {
     public class LoginContext : IdentityDbContext<IdentityUser>
     {
+        //Add-Migration [Nome] -context [NomeContext] -project [NomeProjetoComContext] -outputdir Areas/Identity/Data/Migrations
+        ////Add-Migration InitialLoginMigration -context LoginContext -project Mvc -outputdir Areas/Identity/Data/Migrations
         public LoginContext(DbContextOptions<LoginContext> options)
             : base(options)
         {
