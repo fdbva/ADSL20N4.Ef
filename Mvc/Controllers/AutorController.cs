@@ -4,11 +4,13 @@ using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AutorViewModel = Mvc.ViewModels.AutorViewModel;
 
 namespace Mvc.Controllers
 {
     public class AutorController : Controller
     {
+        //TODO: Refatorar para AutorHttpService
         private readonly IAutorAppService _autorAppService;
 
         public AutorController(

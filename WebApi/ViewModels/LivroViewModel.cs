@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Application.ViewModels
+namespace WebApi.ViewModels
 {
     public class LivroViewModel
     {

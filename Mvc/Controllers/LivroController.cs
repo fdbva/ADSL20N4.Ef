@@ -5,11 +5,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using AutorViewModel = Mvc.ViewModels.AutorViewModel;
+using LivroViewModel = Mvc.ViewModels.LivroViewModel;
 
 namespace Mvc.Controllers
 {
     public class LivroController : Controller
     {
+
+        //TODO: Refatorar para LivroHttpService
         private readonly IAutorAppService _autorAppService;
         private readonly ILivroAppService _livroAppService;
 

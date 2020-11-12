@@ -1,8 +1,8 @@
-﻿using Application.ViewModels;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Model.Models;
+using WebApi.ViewModels;
 
-namespace Infrastructure.Crosscutting.IoC.MappingProfiles
+namespace WebApi.MappingProfiles
 {
     public class MappingProfile : Profile
     {

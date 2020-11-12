@@ -1,8 +1,8 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Application.ViewModels
+namespace WebApi.ViewModels
 {
     public class AutorViewModel
     {

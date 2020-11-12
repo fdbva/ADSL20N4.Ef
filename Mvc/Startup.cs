@@ -28,8 +28,6 @@ namespace Mvc
 
             services.AddRazorPages(); // Login
 
-            services.RegisterBibliotecaServices(Configuration);
-
             //package nuget Microsoft.AspNetCore.Authentication.Google
 
             services.AddAuthentication()
