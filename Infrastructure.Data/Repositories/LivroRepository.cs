@@ -50,7 +50,12 @@ namespace Infrastructure.Data.Repositories
 
         public async Task EditAsync(LivroEntity livroEntity)
         {
-            _bibliotecaContext.Livros.Update(livroEntity);
+            var livroToUpdate = await GetByIdAsync(livroEntity.Id);
+
+            _bibliotecaContext
+                .Entry(livroToUpdate)
+                .CurrentValues.
+                SetValues(livroEntity);
 
             await _bibliotecaContext.SaveChangesAsync();
         }

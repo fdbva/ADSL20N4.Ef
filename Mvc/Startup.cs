@@ -1,9 +1,12 @@
-﻿using Infrastructure.Crosscutting.IoC;
+﻿using System;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Mvc.HttpServices;
+using Mvc.HttpServices.Implementations;
 
 namespace Mvc
 {
@@ -28,8 +31,11 @@ namespace Mvc
 
             services.AddRazorPages(); // Login
 
-            //package nuget Microsoft.AspNetCore.Authentication.Google
+            //TODO: Melhorar esse endereço mágico
+            services.AddHttpClient<IAutorHttpService, AutorHttpService>(x=> x.BaseAddress = new Uri("https://localhost:44366/api/autor/"));
+            services.AddHttpClient<ILivroHttpService, LivroHttpService>(x => x.BaseAddress = new Uri("https://localhost:44366/api/livro/"));
 
+            //package nuget Microsoft.AspNetCore.Authentication.Google
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {

@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Application.AppServices;
-using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Mvc.HttpServices;
 using AutorViewModel = Mvc.ViewModels.AutorViewModel;
 
 namespace Mvc.Controllers
@@ -11,18 +10,18 @@ namespace Mvc.Controllers
     public class AutorController : Controller
     {
         //TODO: Refatorar para AutorHttpService
-        private readonly IAutorAppService _autorAppService;
+        private readonly IAutorHttpService _autorHttpService;
 
         public AutorController(
-            IAutorAppService autorAppService)
+            IAutorHttpService autorHttpService)
         {
-            _autorAppService = autorAppService;
+            _autorHttpService = autorHttpService;
         }
 
         // GET: Autor
         public async Task<IActionResult> Index()
         {
-            return View(await _autorAppService.GetAllAsync(null));
+            return View(await _autorHttpService.GetAllAsync(null));
         }
 
         // GET: Autor/Details/5
@@ -33,7 +32,7 @@ namespace Mvc.Controllers
                 return NotFound();
             }
 
-            var autorViewModel = await _autorAppService.GetByIdAsync(id.Value);
+            var autorViewModel = await _autorHttpService.GetByIdAsync(id.Value);
             if (autorViewModel == null)
             {
                 return NotFound();
@@ -58,7 +57,7 @@ namespace Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _autorAppService.AddAsync(autorViewModel);
+                await _autorHttpService.AddAsync(autorViewModel);
                 return RedirectToAction(nameof(Index));
             }
             return View(autorViewModel);
@@ -72,7 +71,7 @@ namespace Mvc.Controllers
                 return NotFound();
             }
 
-            var autorViewModel = await _autorAppService.GetByIdAsync(id.Value);
+            var autorViewModel = await _autorHttpService.GetByIdAsync(id.Value);
             if (autorViewModel == null)
             {
                 return NotFound();
@@ -97,7 +96,7 @@ namespace Mvc.Controllers
             {
                 try
                 {
-                    await _autorAppService.EditAsync(autorViewModel);
+                    await _autorHttpService.EditAsync(autorViewModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,7 +122,7 @@ namespace Mvc.Controllers
                 return NotFound();
             }
 
-            var autorViewModel = await _autorAppService.GetByIdAsync(id.Value);
+            var autorViewModel = await _autorHttpService.GetByIdAsync(id.Value);
             if (autorViewModel == null)
             {
                 return NotFound();
@@ -138,14 +137,14 @@ namespace Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var autorViewModel = await _autorAppService.GetByIdAsync(id);
-            await _autorAppService.RemoveAsync(autorViewModel);
+            var autorViewModel = await _autorHttpService.GetByIdAsync(id);
+            await _autorHttpService.RemoveAsync(autorViewModel);
             return RedirectToAction(nameof(Index));
         }
 
         private bool AutorViewModelExists(int id)
         {
-            return _autorAppService.GetByIdAsync(id) != null;
+            return _autorHttpService.GetByIdAsync(id) != null;
         }
     }
 }

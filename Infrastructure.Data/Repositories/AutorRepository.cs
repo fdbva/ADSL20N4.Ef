@@ -44,7 +44,12 @@ namespace Infrastructure.Data.Repositories
 
         public async Task EditAsync(AutorEntity autorEntity)
         {
-            _bibliotecaContext.Autores.Update(autorEntity);
+            var autorToUpdate = await GetByIdAsync(autorEntity.Id);
+
+            _bibliotecaContext
+                .Entry(autorToUpdate)
+                .CurrentValues.
+                SetValues(autorEntity);
 
             await _bibliotecaContext.SaveChangesAsync();
         }

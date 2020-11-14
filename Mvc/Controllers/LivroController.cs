@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Application.AppServices;
-using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Mvc.HttpServices;
 using AutorViewModel = Mvc.ViewModels.AutorViewModel;
 using LivroViewModel = Mvc.ViewModels.LivroViewModel;
 
@@ -14,21 +13,21 @@ namespace Mvc.Controllers
     {
 
         //TODO: Refatorar para LivroHttpService
-        private readonly IAutorAppService _autorAppService;
-        private readonly ILivroAppService _livroAppService;
+        private readonly IAutorHttpService _autorHttpService;
+        private readonly ILivroHttpService _livroHttpService;
 
         public LivroController(
-            IAutorAppService autorAppService,
-            ILivroAppService livroAppService)
+            IAutorHttpService autorHttpService,
+            ILivroHttpService livroHttpService)
         {
-            _autorAppService = autorAppService;
-            _livroAppService = livroAppService;
+            _autorHttpService = autorHttpService;
+            _livroHttpService = livroHttpService;
         }
 
         // GET: Livro
         public async Task<IActionResult> Index()
         {
-            return View(await _livroAppService.GetAllAsync(null));
+            return View(await _livroHttpService.GetAllAsync(null));
         }
 
         // GET: Livro/Details/5
@@ -39,7 +38,7 @@ namespace Mvc.Controllers
                 return NotFound();
             }
 
-            var livroViewModel = await _livroAppService.GetByIdAsync(id.Value);
+            var livroViewModel = await _livroHttpService.GetByIdAsync(id.Value);
             if (livroViewModel == null)
             {
                 return NotFound();
@@ -50,7 +49,7 @@ namespace Mvc.Controllers
 
         private async Task PopulateSelectAutores(int? autorId = null)
         {
-            var autores = await _autorAppService.GetAllAsync(null);
+            var autores = await _autorHttpService.GetAllAsync(null);
 
             ViewBag.Autores = new SelectList(
                 autores,
@@ -77,7 +76,7 @@ namespace Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _livroAppService.AddAsync(livroViewModel);
+                await _livroHttpService.AddAsync(livroViewModel);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -93,7 +92,7 @@ namespace Mvc.Controllers
                 return NotFound();
             }
 
-            var livroViewModel = await _livroAppService.GetByIdAsync(id.Value);
+            var livroViewModel = await _livroHttpService.GetByIdAsync(id.Value);
             if (livroViewModel == null)
             {
                 return NotFound();
@@ -121,7 +120,7 @@ namespace Mvc.Controllers
             {
                 try
                 {
-                    await _livroAppService.EditAsync(livroViewModel);
+                    await _livroHttpService.EditAsync(livroViewModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -150,7 +149,7 @@ namespace Mvc.Controllers
                 return NotFound();
             }
 
-            var livroViewModel = await _livroAppService.GetByIdAsync(id.Value);
+            var livroViewModel = await _livroHttpService.GetByIdAsync(id.Value);
             if (livroViewModel == null)
             {
                 return NotFound();
@@ -165,20 +164,20 @@ namespace Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var livroViewModel = await _livroAppService.GetByIdAsync(id);
-            await _livroAppService.RemoveAsync(livroViewModel);
+            var livroViewModel = await _livroHttpService.GetByIdAsync(id);
+            await _livroHttpService.RemoveAsync(livroViewModel);
             return RedirectToAction(nameof(Index));
         }
 
         private bool LivroViewModelExists(int id)
         {
-            return _livroAppService.GetByIdAsync(id) != null;
+            return _livroHttpService.GetByIdAsync(id) != null;
         }
 
         [AcceptVerbs("GET", "POST")]
         public async Task<IActionResult> IsIsbnValid(string isbn, int? id = null)
         {
-            if (!(await _livroAppService.IsIsbnValidAsync(isbn, id)))
+            if (!(await _livroHttpService.IsIsbnValidAsync(isbn, id)))
             {
                 return Json($"Isbn {isbn} já está cadastrado e não pode ser repetido");
             }

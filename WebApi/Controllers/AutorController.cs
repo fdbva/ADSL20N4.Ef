@@ -9,7 +9,7 @@ using WebApi.ViewModels;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AutorController : ControllerBase
     {
         private readonly IAutorService _autorService;
@@ -23,16 +23,18 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{search?}")]
         public async Task<ActionResult<IEnumerable<AutorViewModel>>> Get(string? search)
         {
             var autorEntities = await _autorService.GetAllAsync(search);
 
-            return Ok(_mapper.Map<IEnumerable<AutorViewModel>>(autorEntities));
+            var autorViewModels = _mapper.Map<IEnumerable<AutorViewModel>>(autorEntities);
+
+            return Ok(autorViewModels);
         }
 
-        [HttpGet("GetById")]
-        public async Task<ActionResult<AutorViewModel>> Get(int id)
+        [HttpGet("GetById/{id}")]
+        public async Task<ActionResult<AutorViewModel>> Get([FromRoute]int id)
         {
             var autorEntity = await _autorService.GetByIdAsync(id);
 
@@ -40,7 +42,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(AutorViewModel autorViewModel)
+        public async Task<ActionResult<int>> Post([FromBody]AutorViewModel autorViewModel)
         {
             var autorEntity = _mapper.Map<AutorEntity>(autorViewModel);
 
@@ -49,12 +51,17 @@ namespace WebApi.Controllers
             return Ok(id);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Put(AutorViewModel autorViewModel)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, AutorViewModel autorViewModel)
         {
-            var autorNaoEncontrado = await _autorService.GetByIdAsync(autorViewModel.Id) is not null;
+            if (id != autorViewModel.Id)
+            {
+                return BadRequest();
+            }
 
-            if (autorNaoEncontrado)
+            var autor = await _autorService.GetByIdAsync(id);
+
+            if (autor is null)
             {
                 return NotFound();
             }
@@ -66,7 +73,7 @@ namespace WebApi.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             var autorEntity = await _autorService.GetByIdAsync(id);
@@ -76,7 +83,7 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            await _autorService.EditAsync(autorEntity);
+            await _autorService.RemoveAsync(autorEntity);
 
             return Ok();
         }

@@ -23,16 +23,18 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{search?}")]
         public async Task<ActionResult<IEnumerable<LivroViewModel>>> Get(string? search)
         {
             var livroEntities = await _livroService.GetAllAsync(search);
 
-            return Ok(_mapper.Map<IEnumerable<LivroViewModel>>(livroEntities));
+            var livroViewModels = _mapper.Map<IEnumerable<LivroViewModel>>(livroEntities);
+
+            return Ok(livroViewModels);
         }
 
-        [HttpGet("GetById")]
-        public async Task<ActionResult<LivroViewModel>> Get(int id)
+        [HttpGet("GetById/{id}")]
+        public async Task<ActionResult<LivroViewModel>> Get([FromRoute] int id)
         {
             var livroEntity = await _livroService.GetByIdAsync(id);
 
@@ -40,7 +42,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(LivroViewModel livroViewModel)
+        public async Task<ActionResult<int>> Post([FromBody] LivroViewModel livroViewModel)
         {
             var livroEntity = _mapper.Map<LivroEntity>(livroViewModel);
 
@@ -49,12 +51,17 @@ namespace WebApi.Controllers
             return Ok(id);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Put(LivroViewModel livroViewModel)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, LivroViewModel livroViewModel)
         {
-            var livroNaoEncontrado = await _livroService.GetByIdAsync(livroViewModel.Id) is not null;
+            if (id != livroViewModel.Id)
+            {
+                return BadRequest();
+            }
 
-            if (livroNaoEncontrado)
+            var livro = await _livroService.GetByIdAsync(id);
+
+            if (livro is null)
             {
                 return NotFound();
             }
@@ -66,7 +73,7 @@ namespace WebApi.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             var livroEntity = await _livroService.GetByIdAsync(id);
@@ -76,9 +83,18 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            await _livroService.EditAsync(livroEntity);
+            await _livroService.RemoveAsync(livroEntity);
 
             return Ok();
+        }
+
+        [HttpGet("IsIsbnValid/{isbn}/{id?}")]
+        public async Task<IActionResult> IsIsbnValid(string isbn, int? id)
+        {
+            if (string.IsNullOrWhiteSpace(isbn))
+                return BadRequest("Isbn inválido");
+
+            return Ok(await _livroService.IsIsbnValidAsync(isbn, id));
         }
     }
 }
