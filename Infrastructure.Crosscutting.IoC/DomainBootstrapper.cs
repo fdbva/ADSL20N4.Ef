@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Crosscutting.IoC
 {
-    public static class Bootstrapper
+    public static class DomainBootstrapper
     {
         public static void RegisterBibliotecaServices(
             this IServiceCollection services,

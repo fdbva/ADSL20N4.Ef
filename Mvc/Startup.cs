@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Mvc.Areas.Identity;
 using Mvc.HttpServices;
 using Mvc.HttpServices.Implementations;
 
@@ -24,27 +25,11 @@ namespace Mvc
         {
             services.AddControllersWithViews();
 
-            //AddDbContext e AddDefaultIdentity estão em Areas/Identity/IdentityHostingStartup.cs
-
-            //Comando de Migration para o LoginIdentity:
-            //Add-Migration InitialLoginMigration -context LoginContext -project Mvc -outputdir Areas/Identity/Data/Migrations
-
             services.AddRazorPages(); // Login
 
-            //TODO: Melhorar esse endereço mágico
-            services.AddHttpClient<IAutorHttpService, AutorHttpService>(x=> x.BaseAddress = new Uri("https://localhost:44366/api/autor/"));
-            services.AddHttpClient<ILivroHttpService, LivroHttpService>(x => x.BaseAddress = new Uri("https://localhost:44366/api/livro/"));
+            services.RegisterHttpClients(Configuration);
 
-            //package nuget Microsoft.AspNetCore.Authentication.Google
-            services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    var googleAuthNSection =
-                        Configuration.GetSection("Authentication:Google");
-
-                    options.ClientId = googleAuthNSection["ClientId"];
-                    options.ClientSecret = googleAuthNSection["ClientSecret"];
-                });
+            services.RegisterAuth(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
