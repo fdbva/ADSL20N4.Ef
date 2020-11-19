@@ -11,9 +11,11 @@ namespace Mvc.HttpServices
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            //TODO: Melhorar esse endereço mágico
-            services.AddHttpClient<IAutorHttpService, AutorHttpService>(x => x.BaseAddress = new Uri("https://localhost:44366/api/autor/"));
-            services.AddHttpClient<ILivroHttpService, LivroHttpService>(x => x.BaseAddress = new Uri("https://localhost:44366/api/livro/"));
+            var autorAddress = configuration.GetValue<Uri>("BibliotecaApi:Autor");
+            services.AddHttpClient<IAutorHttpService, AutorHttpService>(x => x.BaseAddress = autorAddress);
+
+            var livroAddress = configuration.GetValue<Uri>("BibliotecaApi:Livro");
+            services.AddHttpClient<ILivroHttpService, LivroHttpService>(x => x.BaseAddress = livroAddress);
         }
     }
 }
