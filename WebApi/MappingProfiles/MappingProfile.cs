@@ -8,8 +8,9 @@ namespace WebApi.MappingProfiles
     {
         public MappingProfile()
         {
-            CreateMap<AutorViewModel, AutorEntity>().ReverseMap();
-            CreateMap<LivroViewModel, LivroEntity>().ReverseMap();
+            CreateMap<AutorRequest, AutorEntity>().ReverseMap();
+            CreateMap<LivroRequest, LivroEntity>().ReverseMap();
+            CreateMap<LivroAutorCreateRequest, LivroAutorCreateModel>().ReverseMap();
         }
     }
 }

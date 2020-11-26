@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mvc.HttpServices;
+using Mvc.ViewModels;
 using AutorViewModel = Mvc.ViewModels.AutorViewModel;
 using LivroViewModel = Mvc.ViewModels.LivroViewModel;
 
@@ -72,16 +73,16 @@ namespace Mvc.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(LivroViewModel livroViewModel)
+        public async Task<IActionResult> Create(LivroAutorCreateViewModel livroAutorCreateViewModel)
         {
             if (ModelState.IsValid)
             {
-                await _livroHttpService.AddAsync(livroViewModel);
+                await _livroHttpService.AddAsync(livroAutorCreateViewModel);
                 return RedirectToAction(nameof(Index));
             }
 
-            await PopulateSelectAutores(livroViewModel.AutorId);
-            return View(livroViewModel);
+            await PopulateSelectAutores(livroAutorCreateViewModel.AutorId);
+            return View(livroAutorCreateViewModel);
         }
 
         // GET: Livro/Edit/5

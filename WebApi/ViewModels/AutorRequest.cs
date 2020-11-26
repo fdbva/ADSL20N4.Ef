@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.ViewModels
 {
-    public class AutorViewModel
+    public class AutorRequest
     {
         public int Id { get; set; }
         [Required]
@@ -14,7 +14,7 @@ namespace WebApi.ViewModels
         [DataType(DataType.Date)]
         public DateTime Nascimento { get; set; }
 
-        public List<LivroViewModel> Livros { get; set; }
+        public List<LivroRequest> Livros { get; set; }
 
         public string AutorNomeCompleto => $"({Id}) {Nome} {UltimoNome}";
     }

@@ -32,9 +32,9 @@ namespace Mvc.HttpServices.Implementations
             return livro;
         }
 
-        public async Task<int> AddAsync(LivroViewModel livroViewModel)
+        public async Task<int> AddAsync(LivroAutorCreateViewModel livroAutorCreateViewModel)
         {
-            var response = await _httpClient.PostAsJsonAsync(string.Empty, livroViewModel);
+            var response = await _httpClient.PostAsJsonAsync(string.Empty, livroAutorCreateViewModel);
 
             response.EnsureSuccessStatusCode();
 

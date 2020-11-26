@@ -24,27 +24,27 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{search?}")]
-        public async Task<ActionResult<IEnumerable<AutorViewModel>>> Get(string? search)
+        public async Task<ActionResult<IEnumerable<AutorRequest>>> Get(string? search)
         {
             var autorEntities = await _autorService.GetAllAsync(search);
 
-            var autorViewModels = _mapper.Map<IEnumerable<AutorViewModel>>(autorEntities);
+            var autorViewModels = _mapper.Map<IEnumerable<AutorRequest>>(autorEntities);
 
             return Ok(autorViewModels);
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<AutorViewModel>> Get([FromRoute]int id)
+        public async Task<ActionResult<AutorRequest>> Get([FromRoute]int id)
         {
             var autorEntity = await _autorService.GetByIdAsync(id);
 
-            return Ok(_mapper.Map<AutorViewModel>(autorEntity));
+            return Ok(_mapper.Map<AutorRequest>(autorEntity));
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post([FromBody]AutorViewModel autorViewModel)
+        public async Task<ActionResult<int>> Post([FromBody]AutorRequest autorRequest)
         {
-            var autorEntity = _mapper.Map<AutorEntity>(autorViewModel);
+            var autorEntity = _mapper.Map<AutorEntity>(autorRequest);
 
             var id = await _autorService.AddAsync(autorEntity);
 
@@ -52,9 +52,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, AutorViewModel autorViewModel)
+        public async Task<ActionResult> Put(int id, AutorRequest autorRequest)
         {
-            if (id != autorViewModel.Id)
+            if (id != autorRequest.Id)
             {
                 return BadRequest();
             }
@@ -66,7 +66,7 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            var autorEntity = _mapper.Map<AutorEntity>(autorViewModel);
+            var autorEntity = _mapper.Map<AutorEntity>(autorRequest);
 
             await _autorService.EditAsync(autorEntity);
 

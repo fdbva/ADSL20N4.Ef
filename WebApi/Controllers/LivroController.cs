@@ -24,37 +24,37 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{search?}")]
-        public async Task<ActionResult<IEnumerable<LivroViewModel>>> Get(string? search)
+        public async Task<ActionResult<IEnumerable<LivroRequest>>> Get(string? search)
         {
             var livroEntities = await _livroService.GetAllAsync(search);
 
-            var livroViewModels = _mapper.Map<IEnumerable<LivroViewModel>>(livroEntities);
+            var livroViewModels = _mapper.Map<IEnumerable<LivroRequest>>(livroEntities);
 
             return Ok(livroViewModels);
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<LivroViewModel>> Get([FromRoute] int id)
+        public async Task<ActionResult<LivroRequest>> Get([FromRoute] int id)
         {
             var livroEntity = await _livroService.GetByIdAsync(id);
 
-            return Ok(_mapper.Map<LivroViewModel>(livroEntity));
+            return Ok(_mapper.Map<LivroRequest>(livroEntity));
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post([FromBody] LivroViewModel livroViewModel)
+        public async Task<ActionResult<int>> Post([FromBody] LivroAutorCreateRequest livroAutorCreateRequest)
         {
-            var livroEntity = _mapper.Map<LivroEntity>(livroViewModel);
+            var livroAutorCreateModel = _mapper.Map<LivroAutorCreateModel>(livroAutorCreateRequest);
 
-            var id = await _livroService.AddAsync(livroEntity);
+            var id = await _livroService.AddAsync(livroAutorCreateModel);
 
             return Ok(id);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, LivroViewModel livroViewModel)
+        public async Task<ActionResult> Put(int id, LivroRequest livroRequest)
         {
-            if (id != livroViewModel.Id)
+            if (id != livroRequest.Id)
             {
                 return BadRequest();
             }
@@ -66,7 +66,7 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            var livroEntity = _mapper.Map<LivroEntity>(livroViewModel);
+            var livroEntity = _mapper.Map<LivroEntity>(livroRequest);
 
             await _livroService.EditAsync(livroEntity);
 

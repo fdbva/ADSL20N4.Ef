@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.ViewModels
 {
-    public class LivroViewModel
+    public class LivroRequest
     {
         public int Id { get; set; }
         public string Titulo { get; set; }
@@ -13,6 +13,6 @@ namespace WebApi.ViewModels
         public DateTime Publicacao { get; set; }
 
         public int AutorId { get; set; }
-        public AutorViewModel Autor { get; set; }
+        public AutorRequest Autor { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Mvc.HttpServices
     {
         Task<IEnumerable<LivroViewModel>> GetAllAsync(string search);
         Task<LivroViewModel> GetByIdAsync(int id);
-        Task<int> AddAsync(LivroViewModel livroViewModel);
+        Task<int> AddAsync(LivroAutorCreateViewModel livroAutorCreateViewModel);
         Task EditAsync(LivroViewModel livroViewModel);
         Task RemoveAsync(LivroViewModel livroViewModel);
         Task<bool> IsIsbnValidAsync(string isbn, int? id);
