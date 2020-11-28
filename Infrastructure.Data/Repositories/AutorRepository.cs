@@ -21,6 +21,10 @@ namespace Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<AutorEntity>> GetAllAsync(string search)
         {
+            //brincadeiras de relatórios com Linqs
+            //await AutorComMaiorQuantidadeDeLivrosAsync();
+            //await AutorComLivroPublicadoMaisRecenteAsync();
+
             if (string.IsNullOrWhiteSpace(search))
             {
                 return _bibliotecaContext.Autores;
@@ -62,6 +66,33 @@ namespace Infrastructure.Data.Repositories
             var autorToRemove = await GetByIdAsync(autorEntity.Id);
 
             _bibliotecaContext.Autores.Remove(autorToRemove);
+        }
+
+        //métodos deixados de exemplo
+        public async Task<AutorEntity> AutorComMaiorQuantidadeDeLivrosAsync()
+        {
+            var autorEntity =
+                await _bibliotecaContext
+                    .Autores
+                    .OrderByDescending(x => x.Livros.Count)
+                    .FirstOrDefaultAsync();
+
+            return autorEntity;
+        }
+
+        //métodos deixados de exemplo
+        public async Task<AutorEntity> AutorComLivroPublicadoMaisRecenteAsync()
+        {
+            var autorEntity =
+                await _bibliotecaContext
+                    .Autores
+                    .SelectMany(x => x.Livros)
+                    .OrderByDescending(x => x.Publicacao)
+                    .Select(x => x.Autor)
+                    .FirstOrDefaultAsync();
+
+            //MoreLinq
+            return autorEntity;
         }
     }
 }

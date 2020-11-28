@@ -1,4 +1,5 @@
-﻿using Domain.Model.Models;
+﻿using System.Diagnostics;
+using Domain.Model.Models;
 using Infrastructure.Data.Context.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,8 @@ namespace Infrastructure.Data.Context
             : base(options)
         {
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.LogTo(message => Debug.WriteLine(message));
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
