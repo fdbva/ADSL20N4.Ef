@@ -37,8 +37,6 @@ namespace Infrastructure.Data.Repositories
         {
             var entityEntry = await _bibliotecaContext.Autores.AddAsync(autorEntity);
 
-            await _bibliotecaContext.SaveChangesAsync();
-
             return entityEntry.Entity.Id;
         }
 
@@ -50,8 +48,6 @@ namespace Infrastructure.Data.Repositories
                 .Entry(autorToUpdate)
                 .CurrentValues.
                 SetValues(autorEntity);
-
-            await _bibliotecaContext.SaveChangesAsync();
         }
 
         public async Task RemoveAsync(AutorEntity autorEntity)
@@ -59,8 +55,6 @@ namespace Infrastructure.Data.Repositories
             var autorToRemove = await GetByIdAsync(autorEntity.Id);
 
             _bibliotecaContext.Autores.Remove(autorToRemove);
-
-            await _bibliotecaContext.SaveChangesAsync();
         }
     }
 }

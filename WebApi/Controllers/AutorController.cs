@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Model.Interfaces.Services;
 using Domain.Model.Models;
+using Domain.Model.UoW;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.ViewModels;
 
@@ -14,13 +15,16 @@ namespace WebApi.Controllers
     {
         private readonly IAutorService _autorService;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AutorController(
             IAutorService autorService,
-            IMapper mapper)
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
             _autorService = autorService;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("{search?}")]
@@ -46,7 +50,11 @@ namespace WebApi.Controllers
         {
             var autorEntity = _mapper.Map<AutorEntity>(autorRequest);
 
+            _unitOfWork.BeginTransaction();
+
             var id = await _autorService.AddAsync(autorEntity);
+
+            await _unitOfWork.CommitAsync();
 
             return Ok(id);
         }
@@ -68,7 +76,11 @@ namespace WebApi.Controllers
 
             var autorEntity = _mapper.Map<AutorEntity>(autorRequest);
 
+            _unitOfWork.BeginTransaction();
+
             await _autorService.EditAsync(autorEntity);
+
+            await _unitOfWork.CommitAsync();
 
             return Ok();
         }
@@ -83,7 +95,11 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
+            _unitOfWork.BeginTransaction();
+
             await _autorService.RemoveAsync(autorEntity);
+
+            await _unitOfWork.CommitAsync();
 
             return Ok();
         }

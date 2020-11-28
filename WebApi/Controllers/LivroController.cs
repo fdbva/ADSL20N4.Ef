@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Transactions;
 using AutoMapper;
 using Domain.Model.Interfaces.Services;
 using Domain.Model.Models;
+using Domain.Model.UoW;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.ViewModels;
 
@@ -14,13 +16,16 @@ namespace WebApi.Controllers
     {
         private readonly ILivroService _livroService;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public LivroController(
             ILivroService livroService,
-            IMapper mapper)
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
             _livroService = livroService;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("{search?}")]
@@ -45,8 +50,12 @@ namespace WebApi.Controllers
         public async Task<ActionResult<int>> Post([FromBody] LivroAutorCreateRequest livroAutorCreateRequest)
         {
             var livroAutorCreateModel = _mapper.Map<LivroAutorCreateModel>(livroAutorCreateRequest);
+            
+            _unitOfWork.BeginTransaction();
 
             var id = await _livroService.AddAsync(livroAutorCreateModel);
+
+            await _unitOfWork.CommitAsync();
 
             return Ok(id);
         }
@@ -68,7 +77,11 @@ namespace WebApi.Controllers
 
             var livroEntity = _mapper.Map<LivroEntity>(livroRequest);
 
+            _unitOfWork.BeginTransaction();
+
             await _livroService.EditAsync(livroEntity);
+
+            await _unitOfWork.CommitAsync();
 
             return Ok();
         }
@@ -83,7 +96,11 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
+            _unitOfWork.BeginTransaction();
+
             await _livroService.RemoveAsync(livroEntity);
+
+            await _unitOfWork.CommitAsync();
 
             return Ok();
         }
