@@ -19,9 +19,12 @@ namespace Mvc.Controllers
         }
 
         // GET: Autor
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+            string? search = null)
         {
-            return View(await _autorHttpService.GetAllAsync(null));
+            ViewBag.Search = search;
+
+            return View(await _autorHttpService.GetAllAsync(search));
         }
 
         // GET: Autor/Details/5

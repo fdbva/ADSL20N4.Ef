@@ -26,9 +26,12 @@ namespace Mvc.Controllers
         }
 
         // GET: Livro
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+            string? search = null)
         {
-            return View(await _livroHttpService.GetAllAsync(null));
+            ViewBag.Search = search;
+
+            return View(await _livroHttpService.GetAllAsync(search));
         }
 
         // GET: Livro/Details/5
