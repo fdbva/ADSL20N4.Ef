@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Model.Interfaces.Repositories;
@@ -25,7 +26,13 @@ namespace Infrastructure.Data.Repositories
                 return _bibliotecaContext.Autores;
             }
 
-            return _bibliotecaContext.Autores.Where(x => x.Nome.Contains(search));
+            //Utilizem o mouseover para através da opção "DebugView/Query" visualizar a query gerada pelo Linq
+            var result = _bibliotecaContext.Autores.Where(x => x.Nome.Contains(search));
+
+            //Como alternativa, a query tbm pode ser acessada pelo método de extensão abaixo
+            var sql = result.ToQueryString();
+
+            return result;
         }
 
         public async Task<AutorEntity> GetByIdAsync(int id)
