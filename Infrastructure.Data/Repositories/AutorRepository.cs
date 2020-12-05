@@ -9,12 +9,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories
 {
-    public class AutorRepository : IAutorRepository
+    public class AutorRepository : BaseRepository<AutorEntity>, IAutorRepository
     {
         private readonly BibliotecaContext _bibliotecaContext;
 
         public AutorRepository(
-            BibliotecaContext bibliotecaContext)
+            BibliotecaContext bibliotecaContext) 
+            : base(bibliotecaContext)
         {
             _bibliotecaContext = bibliotecaContext;
         }
@@ -37,35 +38,6 @@ namespace Infrastructure.Data.Repositories
             var sql = result.ToQueryString();
 
             return result;
-        }
-
-        public async Task<AutorEntity> GetByIdAsync(int id)
-        {
-            return await _bibliotecaContext.Autores.FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public async Task<int> AddAsync(AutorEntity autorEntity)
-        {
-            var entityEntry = await _bibliotecaContext.Autores.AddAsync(autorEntity);
-
-            return entityEntry.Entity.Id;
-        }
-
-        public async Task EditAsync(AutorEntity autorEntity)
-        {
-            var autorToUpdate = await GetByIdAsync(autorEntity.Id);
-
-            _bibliotecaContext
-                .Entry(autorToUpdate)
-                .CurrentValues.
-                SetValues(autorEntity);
-        }
-
-        public async Task RemoveAsync(AutorEntity autorEntity)
-        {
-            var autorToRemove = await GetByIdAsync(autorEntity.Id);
-
-            _bibliotecaContext.Autores.Remove(autorToRemove);
         }
 
         //métodos deixados de exemplo

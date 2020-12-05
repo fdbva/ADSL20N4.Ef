@@ -38,15 +38,16 @@ namespace Domain.Service.Services
         public async Task<int> AddAsync(LivroAutorCreateModel livroAutorCreateModel)
         {
             var autorId = livroAutorCreateModel.AutorId ?? 0;
+            AutorEntity autorEntity = null;
             if (livroAutorCreateModel.AutorId is null || livroAutorCreateModel.AutorId < 1)
             {
-                var autorEntity = livroAutorCreateModel.ToAutorEntity();
+                autorEntity = livroAutorCreateModel.ToAutorEntity();
 
                 autorId = await _autorRepository.AddAsync(autorEntity);
             }
 
             var livroEntity = livroAutorCreateModel.ToLivroEntity();
-            livroEntity.AutorId = autorId;
+            livroEntity.Autor = autorEntity;
 
             if (autorId == 1)
             {

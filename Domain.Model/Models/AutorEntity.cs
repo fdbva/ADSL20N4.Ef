@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace Domain.Model.Models
 {
-    public class AutorEntity
+    public class AutorEntity : BaseEntity
     {
-        public int Id { get; set; }
         public string Nome { get; set; }
         public string UltimoNome { get; set; }
         public DateTime Nascimento { get; set; }

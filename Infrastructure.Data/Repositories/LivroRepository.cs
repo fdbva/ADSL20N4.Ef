@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories
 {
-    public class LivroRepository : ILivroRepository
+    public class LivroRepository : BaseRepository<LivroEntity>, ILivroRepository
     {
         private readonly BibliotecaContext _bibliotecaContext;
 
         public LivroRepository(
             BibliotecaContext bibliotecaContext)
+         : base(bibliotecaContext)
         {
             _bibliotecaContext = bibliotecaContext;
         }
@@ -32,35 +33,11 @@ namespace Infrastructure.Data.Repositories
             return livrosComAutores.Where(x => x.Titulo.Contains(search));
         }
 
-        public async Task<LivroEntity> GetByIdAsync(int id)
+        public override async Task<LivroEntity> GetByIdAsync(int id)
         {
             return await _bibliotecaContext.Livros
                 .Include(x => x.Autor)
                 .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public async Task<int> AddAsync(LivroEntity livroEntity)
-        {
-            var entityEntry = await _bibliotecaContext.Livros.AddAsync(livroEntity);
-
-            return entityEntry.Entity.Id;
-        }
-
-        public async Task EditAsync(LivroEntity livroEntity)
-        {
-            var livroToUpdate = await GetByIdAsync(livroEntity.Id);
-
-            _bibliotecaContext
-                .Entry(livroToUpdate)
-                .CurrentValues.
-                SetValues(livroEntity);
-        }
-
-        public async Task RemoveAsync(LivroEntity livroEntity)
-        {
-            var livroToRemove = await GetByIdAsync(livroEntity.Id);
-
-            _bibliotecaContext.Livros.Remove(livroToRemove);
         }
 
         public async Task<LivroEntity> GetByIsbnAsync(string isbn)

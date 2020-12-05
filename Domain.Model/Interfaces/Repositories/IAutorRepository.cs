@@ -4,12 +4,8 @@ using Domain.Model.Models;
 
 namespace Domain.Model.Interfaces.Repositories
 {
-    public interface IAutorRepository
+    public interface IAutorRepository : IBaseRepository<AutorEntity>
     {
-        Task<IEnumerable<AutorEntity>> GetAllAsync(string search);
-        Task<AutorEntity> GetByIdAsync(int id);
-        Task<int> AddAsync(AutorEntity autorEntity);
-        Task EditAsync(AutorEntity autorEntity);
-        Task RemoveAsync(AutorEntity autorEntity);
+        Task<IEnumerable<AutorEntity>> GetAllAsync(string searchName);
     }
 }

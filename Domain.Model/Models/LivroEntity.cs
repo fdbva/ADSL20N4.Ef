@@ -2,9 +2,8 @@
 
 namespace Domain.Model.Models
 {
-    public class LivroEntity
+    public class LivroEntity : BaseEntity
     {
-        public int Id { get; set; }
         public string Titulo { get; set; }
         public string Isbn { get; set; }
         public DateTime Publicacao { get; set; }

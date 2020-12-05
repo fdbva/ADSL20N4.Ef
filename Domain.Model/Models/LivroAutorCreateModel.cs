@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Model.Models
 {
-    public class LivroAutorCreateModel
+    public class LivroAutorCreateModel : BaseEntity
     {
         [Required]
         public string Titulo { get; set; }
