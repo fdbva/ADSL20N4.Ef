@@ -4,7 +4,7 @@ using Domain.Model.Models;
 
 namespace Domain.Model.Interfaces.Repositories
 {
-    public interface ILivroRepository : IBaseRepository<LivroEntity>
+    public interface ILivroRepository : ICrudRepository<LivroEntity>
     {
         Task<IEnumerable<LivroEntity>> GetAllAsync(string searchTitle);
         Task<LivroEntity> GetByIsbnAsync(string isbn);

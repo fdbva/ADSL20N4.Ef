@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories
 {
-    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>
+    public abstract class CrudRepository<TEntity> : ICrudRepository<TEntity>
         where TEntity : BaseEntity
     {
         protected readonly BibliotecaContext BibliotecaContext;
         protected readonly DbSet<TEntity> DbSet;
 
-        protected BaseRepository(
+        protected CrudRepository(
             BibliotecaContext bibliotecaContext)
         {
             BibliotecaContext = bibliotecaContext;

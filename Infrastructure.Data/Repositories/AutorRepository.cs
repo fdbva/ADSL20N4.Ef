@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories
 {
-    public class AutorRepository : BaseRepository<AutorEntity>, IAutorRepository
+    public class AutorRepository : CrudRepository<AutorEntity>, IAutorRepository
     {
         private readonly BibliotecaContext _bibliotecaContext;
 

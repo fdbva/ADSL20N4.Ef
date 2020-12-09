@@ -4,7 +4,7 @@ using Domain.Model.Models;
 
 namespace Domain.Model.Interfaces.Repositories
 {
-    public interface IAutorRepository : IBaseRepository<AutorEntity>
+    public interface IAutorRepository : ICrudRepository<AutorEntity>
     {
         Task<IEnumerable<AutorEntity>> GetAllAsync(string searchName);
     }
