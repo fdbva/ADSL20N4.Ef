@@ -5,7 +5,7 @@ using Domain.Model.Interfaces.Services;
 using Domain.Model.Models;
 using Domain.Model.UoW;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.ViewModels;
+using WebApi.RequestContracts;
 
 namespace WebApi.Controllers
 {

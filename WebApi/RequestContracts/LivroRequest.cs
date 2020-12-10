@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.ViewModels
+namespace WebApi.RequestContracts
 {
     public class LivroRequest
     {

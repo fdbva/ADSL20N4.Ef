@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Model.Models;
-using WebApi.ViewModels;
+using WebApi.RequestContracts;
 
 namespace WebApi.MappingProfiles
 {
