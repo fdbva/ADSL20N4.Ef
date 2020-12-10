@@ -20,6 +20,8 @@ namespace Infrastructure.Data.Repositories
             DbSet = bibliotecaContext.Set<TEntity>();
         }
 
+        public abstract Task<IEnumerable<TEntity>> GetAllAsync(string search);
+
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return DbSet;

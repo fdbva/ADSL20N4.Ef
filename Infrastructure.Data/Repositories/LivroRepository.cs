@@ -19,7 +19,7 @@ namespace Infrastructure.Data.Repositories
             _bibliotecaContext = bibliotecaContext;
         }
 
-        public async Task<IEnumerable<LivroEntity>> GetAllAsync(string search)
+        public override async Task<IEnumerable<LivroEntity>> GetAllAsync(string search)
         {
             var livrosComAutores = _bibliotecaContext
                 .Livros
