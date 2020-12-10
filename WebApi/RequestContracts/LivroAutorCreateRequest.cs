@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.RequestContracts
 {
-    public class LivroAutorCreateRequest
+    public class LivroAutorCreateRequest : BaseRequest
     {
         [Required]
         public string Titulo { get; set; }

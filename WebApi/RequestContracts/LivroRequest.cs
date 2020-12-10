@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.RequestContracts
 {
-    public class LivroRequest
+    public class LivroRequest : BaseRequest
     {
-        public int Id { get; set; }
         public string Titulo { get; set; }
 
         [Remote(controller: "Livro", action: "IsIsbnValid", AdditionalFields = nameof(Id))]

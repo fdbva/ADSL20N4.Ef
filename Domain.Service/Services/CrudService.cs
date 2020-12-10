@@ -6,12 +6,12 @@ using Domain.Model.Models;
 
 namespace Domain.Service.Services
 {
-    public class CrudService<TEntity> : ICrudService<TEntity>
+    public abstract class CrudService<TEntity> : ICrudService<TEntity>
         where TEntity : BaseEntity
     {
         private readonly ICrudRepository<TEntity> _crudRepository;
 
-        public CrudService(
+        protected CrudService(
             ICrudRepository<TEntity> crudRepository)
         {
             _crudRepository = crudRepository;

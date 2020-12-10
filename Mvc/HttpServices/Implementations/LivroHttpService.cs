@@ -34,7 +34,7 @@ namespace Mvc.HttpServices.Implementations
 
         public async Task<int> AddAsync(LivroAutorCreateViewModel livroAutorCreateViewModel)
         {
-            var response = await _httpClient.PostAsJsonAsync(string.Empty, livroAutorCreateViewModel);
+            var response = await _httpClient.PostAsJsonAsync($"LivroAutorCreate", livroAutorCreateViewModel);
 
             response.EnsureSuccessStatusCode();
 
