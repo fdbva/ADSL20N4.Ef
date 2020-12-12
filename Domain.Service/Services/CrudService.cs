@@ -17,32 +17,32 @@ namespace Domain.Service.Services
             _crudRepository = crudRepository;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(string search)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(string search)
         {
             return await _crudRepository.GetAllAsync(search);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _crudRepository.GetAllAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
             return await _crudRepository.GetByIdAsync(id);
         }
 
-        public async Task<int> AddAsync(TEntity entity)
+        public virtual async Task<int> AddAsync(TEntity entity)
         {
             return await _crudRepository.AddAsync(entity);
         }
 
-        public async Task EditAsync(TEntity entity)
+        public virtual async Task EditAsync(TEntity entity)
         {
             await _crudRepository.EditAsync(entity);
         }
 
-        public async Task RemoveAsync(TEntity entity)
+        public virtual async Task RemoveAsync(TEntity entity)
         {
             await _crudRepository.RemoveAsync(entity);
         }

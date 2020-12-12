@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mvc.ViewModels
 {
-    public class LivroAutorCreateViewModel
+    public class LivroAutorCreateViewModel : BaseViewModel
     {
         [Required]
         public string Titulo { get; set; }

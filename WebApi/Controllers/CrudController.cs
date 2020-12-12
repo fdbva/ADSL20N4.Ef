@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Model.Interfaces.Services;
 using Domain.Model.Models;
 using Domain.Model.UoW;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApi.RequestContracts;
 
 namespace WebApi.Controllers
@@ -75,15 +77,29 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            var autorEntity = _mapper.Map<TEntity>(autorRequest);
+            try
+            {
+                var autorEntity = _mapper.Map<TEntity>(autorRequest);
 
-            _unitOfWork.BeginTransaction();
+                _unitOfWork.BeginTransaction();
 
-            await _crudService.EditAsync(autorEntity);
+                await _crudService.EditAsync(autorEntity);
 
-            await _unitOfWork.CommitAsync();
+                await _unitOfWork.CommitAsync();
 
-            return Ok();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BaseViewModelExists(autorRequest.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         [HttpDelete("{id}")]
@@ -103,6 +119,11 @@ namespace WebApi.Controllers
             await _unitOfWork.CommitAsync();
 
             return Ok();
+        }
+
+        private bool BaseViewModelExists(int id)
+        {
+            return _crudService.GetByIdAsync(id) != null;
         }
     }
 }
